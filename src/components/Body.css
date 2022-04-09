@@ -1,0 +1,13 @@
+.container {
+    background-image: url("../images/tlo.jpg");
+    background-size: cover;
+    height: 100vh;
+}
+
+#naglowek{
+    margin-top: 0;
+    text-align: center;
+    justify-content: center;
+    color: White;
+    padding-top: 100px;
+}

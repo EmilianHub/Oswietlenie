@@ -1,0 +1,58 @@
+.OswietleniePage{
+    background-image: url("../images/tlo.jpg");
+    background-size: cover;
+    height: 100vh;
+}
+
+.Position{
+    margin-top: 15%;
+    margin-left: 50%;
+    position: relative;
+    display: inline-block;
+    justify-content: center;
+}
+
+.Position input{
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.InputBox:checked + .SwitchBox{
+    background-color: #1890ff;
+
+}
+.InputBox:checked + .SwitchBox:before{
+    left: 68px;
+}
+
+.SwitchBox {
+    display: flex;
+    cursor: pointer;
+    width: 120px;
+    height: 55px;
+    border-radius: 100px;
+    background-color: #bfbfbf;
+    position: relative;
+    transition: background-color 0.4s;
+    justify-content: center;
+}
+.SwitchBox:before{
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 50px;
+    height: 50px;
+    border-radius: 45px;
+    transition: 0.4s;
+    background-color: #fff;
+    box-shadow: 0 2px 4px 0 rgba(0,35,11,0.2);
+}
+
+p{
+    margin-left: 48%;
+    font-size: 22px;
+    justify-content: center;
+    color: whitesmoke;
+}
