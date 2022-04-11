@@ -1,8 +1,14 @@
 import Body from "../components/Body";
+import React from "react";
+import Sidebar from "../components/Sidebar";
 
 function Home(){
     return(
-        <Body/>
+        <div>
+            <Sidebar/>
+            <Body/>
+        </div>
+
     )
 }
 export default Home

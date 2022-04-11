@@ -9,7 +9,7 @@ import GroupIcon from '@mui/icons-material/Group';
         {
             name: "Strona Główna",
             img: <HomeIcon/>,
-            link: "/"
+            link: "/Home",
         },
         {
             name: "Sterowanie oświetleniem",
@@ -26,7 +26,7 @@ import GroupIcon from '@mui/icons-material/Group';
         {
             name: "Strona Główna",
             img: <HomeIcon/>,
-            link: "/"
+            link: "/Home"
         },
         {
             name: "Sterowanie oświetleniem",

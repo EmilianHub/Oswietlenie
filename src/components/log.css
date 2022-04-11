@@ -1,0 +1,21 @@
+body{
+    background-image: url("../images/tlo.jpg");
+    background-size: cover;
+    height: 100vh;
+}
+
+.button{
+    margin: 10px 0 0 0;
+    padding: 7px 10px;
+    border: 1px solid #efffff;
+    borderRadius: 3px;
+    background: #F2AD40;
+    width: 100%;
+    fontSize: 15px;
+    color: Black;
+    display: block;
+}
+.button:hover{
+    cursor: pointer;
+    background-color: chocolate;
+}

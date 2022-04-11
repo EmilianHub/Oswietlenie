@@ -1,5 +1,6 @@
 import React from 'react'
 import './Body.css'
+import Sidebar from "./Sidebar";
 
 function Body() {
     return (

@@ -1,9 +1,9 @@
-import React from "react";
+import  Login from "../components/log"
 
-function Login(){
+function LoginFrom(){
     return(
-        <h1>Logowanie do strony</h1>
+        <Login/>
     )
 }
 
-export default Login
+export default LoginFrom
