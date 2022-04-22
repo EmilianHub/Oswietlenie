@@ -67,9 +67,9 @@ app.post("/Logowanie", (req, res) => {
     const Login = req.body.Login;
     const Password = req.body.Password;
 
-    const Select = `SELECT "id", "rola" FROM public."uzytkownicy" where "login" = $1 AND "haslo" = $2`;
+    const Select = `SELECT * FROM public."uzytkownicy" where "login" = $1 AND "haslo" = $2`;
     pool.query(Select, [Login,Password], (err, response) => {
-        if(response.length>0){
+        if(response.rows.length>0){
             req.session.user =response;
             console.log(req.session.user);
             res.send(response);
