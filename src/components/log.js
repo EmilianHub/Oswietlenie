@@ -1,14 +1,17 @@
-import React from 'react';
-import "./log.css"
 
+
+import React, {useEffect, useState} from 'react';
+import "./log.css"
+import Axios from "axios";
+import {useForm} from "react-hook-form";
 
 const formStyle = {
     margin: '100px auto',
     padding: '20px',
     border: '1px solid #c9c9c9',
     borderRadius: '5px',
-    background: 'Black',
-    color:'Green',
+    background: '#4E4C4C',
+    color:'#FFCCFF',
     width: '50vh',
 };
 
@@ -27,40 +30,76 @@ const inputStyle = {
     width: '100%'
 };
 
-
-
-const Field = React.forwardRef(({label, type}, ref) => {
-    return (
-        <div>
-            <label style={labelStyle} >{label}</label>
-            <input ref={ref} type={type} style={inputStyle} />
-        </div>
-    );
-});
-
-
-const Form = ({onSubmit}) => {
-    const usernameRef = React.useRef();
-    const passwordRef = React.useRef();
-    const handleSubmit = e => {
-        e.preventDefault();
-        const data = {
-            username: usernameRef.current.value,
-            password: passwordRef.current.value,
-
-        };
-        onSubmit(data);
-    };
-    return (
-        <form style={formStyle} onSubmit={handleSubmit} >
-            <Field ref={usernameRef} label="Nazwa użytkownika:" type="text" />
-            <Field ref={passwordRef} label="Hasło:" type="password" />
-
-            <div>
-                <button className="button" type="submit">Zaloguj</button>
-            </div>
-        </form>
-    );
+const submitStyle = {
+    margin: '10px 0 0 0',
+    padding: '7px 10px',
+    border: '1px solid #efffff',
+    borderRadius: '3px',
+    background: '#F2AD40',
+    width: '100%',
+    fontSize: '15px',
+    color: '#2F2D6B',
+    display: 'block'
 };
 
-export default Form
+export default function Form() {
+    Axios.defaults.withCredentials = true;
+    const [Login, setLogin] = useState("")
+    const [Password, setPassword] = useState("")
+    const [Loginstatus, setLoginstatus] = useState("")
+    const [Rola, setrola] = useState("")
+
+
+    const SELECT = () => {
+        Axios.post('http://localhost:5000/Logowanie', {
+            Login: Login,
+            Password: Password,
+        })
+            .then((response) => {
+                if (response.data.message){
+                    setLoginstatus(response.data.message)
+                } else{
+                    setLoginstatus(response.data[0].Login);
+
+                }
+            });
+    };
+    useEffect(()=>{
+        Axios.get('http://localhost:5000/Logowanie').then((response) =>{
+            console.log(response);
+        })
+    },[])
+
+    const {register, handleSubmit} = useForm();
+    const onSubmit = data => console.log(data);
+
+    return (
+
+
+        <div className="card">
+            <form style={formStyle} onSubmit={handleSubmit(onSubmit)}>
+                <div>Logowanie</div>
+                <br/>
+                <div>
+
+
+                    <label style={labelStyle}>Login:</label><br/>
+                    <input style={inputStyle} {...register("Login")} onChange={(e) => {
+                        setLogin(e.target.value)
+                    }}/><br/>
+                </div>
+
+                <div>
+                    <label style={labelStyle}>Hasło:</label><br/>
+                    <input type="password" style={inputStyle} {...register("Password")} onChange={(e) => {
+                        setPassword(e.target.value)
+                    }}/><br/>
+
+                </div>
+                <button className="button" onClick={SELECT} type="submit">zaloguj</button>
+            </form>
+            <h1>{Loginstatus}</h1>
+        </div>
+    );
+
+}

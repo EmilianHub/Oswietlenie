@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {useState} from 'react';
+import "./rej.css"
+import Axios from "axios";
+import {useForm} from "react-hook-form";
 
 const formStyle = {
     margin: '100px auto',
@@ -37,48 +40,63 @@ const submitStyle = {
     display: 'block'
 };
 
-const Field = React.forwardRef(({label, type}, ref) => {
-    return (
-        <div>
-            <label style={labelStyle} >{label}</label>
-            <input ref={ref} type={type} style={inputStyle} />
-        </div>
-    );
-});
+export default function Form() {
+    Axios.defaults.withCredentials = true;
+    const [firstName, setFirstName] = useState("")
+    const [lastName, setlastName] = useState("")
+    const [Login, setLogin] = useState("")
+    const [Password, setPassword] = useState("")
+    const [ConfPassword, setConfirmPassword] = useState("")
+    const [EMail, setEMail] = useState("")
+    const [rola, setrola] = useState("")
 
 
-const Form = ({onSubmit}) => {
-    const ImieRef = React.useRef();
-    const NazwiskoRef = React.useRef();
-    const usernameRef = React.useRef();
-    const emailRef = React.useRef();
-    const passwordRef = React.useRef();
-    const passwordConfirmRef = React.useRef();
-    const handleSubmit = e => {
-        e.preventDefault();
-        const data = {
-            Imie: ImieRef.current.value,
-            Nazwisko: NazwiskoRef.current.value,
-            username: usernameRef.current.value,
-            email: emailRef.current.value,
-            password: passwordRef.current.value,
-            passwordConfirm: passwordConfirmRef.current.value
-        };
-        onSubmit(data);
-    };
+    const Import = () =>{
+        Axios.post('http://localhost:5000/Rejestracja', {Firstname: firstName, Lastname: lastName, Login: Login, Email:EMail, Password: Password, rola: rola })
+            .then((response) => console.log(response))
+    }
+
+    const { register, handleSubmit } = useForm();
+    const onSubmit = data => console.log(data);
+
     return (
-        <form style={formStyle} onSubmit={handleSubmit} >
-            <Field ref={ImieRef} label="Imię:" type="text" />
-            <Field ref={NazwiskoRef} label="Nazwisko:" type="text" />
-            <Field ref={usernameRef} label="Nazwa użytkownika:" type="text" />
-            <Field ref={emailRef} label="Email:" type="text" />
-            <Field ref={passwordRef} label="Hasło:" type="password" />
-            <Field ref={passwordConfirmRef} label="Potwierdź hasło:" type="password" />
-            <div>
-                <button style={submitStyle} type="submit">Zarejestruj</button>
-            </div>
-        </form>
+
+
+        <div className="card">
+            <form  style={formStyle} onSubmit={handleSubmit(onSubmit)}>
+                <div >Rejestracja </div> <br/>
+                <div >
+                    <label style={labelStyle}>Imię:</label><br/>
+                    <input style={inputStyle} {...register("firstName")} onChange={(e) =>
+                    {setFirstName(e.target.value);} }/><br/>
+                </div>
+                <div >
+                    <label style={labelStyle}> Nazwisko:</label><br/>
+                    <input style={inputStyle}{...register("lastName")} onChange={(e)=>{setlastName(e.target.value)}} /><br/>
+                </div>
+                <div >
+                    <label style={labelStyle} >Email:</label><br/>
+                    <input style={inputStyle} {...register("email")} onChange={(e)=>{setEMail(e.target.value)}} />
+                </div>
+                <div>
+
+                    <label style={labelStyle}>Login:</label><br/>
+                    <input style={inputStyle} {...register("Login")} onChange={(e)=>{setLogin(e.target.value)}} /><br/>
+                </div>
+
+                <div >
+                    <label style={labelStyle}>Hasło:</label><br/>
+                    <input type="password" style={inputStyle} {...register("Password")} onChange={(e)=>{setPassword(e.target.value)}}/><br/>
+
+                </div>
+                <div >
+                    <label style={labelStyle}>Potwierdź hasło:</label><br/>
+                    <input type="password" style={inputStyle} {...register("confPassword")} onChange={(e)=>{setConfirmPassword(e.target.value)}}/><br/>
+
+                </div>
+
+                <button className="button" onClick={Import} type="submit">Zarejestruj</button>
+            </form> </div>
+
     );
 };
-
-export default Form
