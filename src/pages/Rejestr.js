@@ -9,7 +9,7 @@ function RejestrForm() {
     const [Rola, setRola] = useState("")
     useEffect(()=>{
         Axios.get('http://localhost:5000/Logowanie').then((response) =>{
-            if(response.data.loggedIn == true)
+            if(response.data.loggedIn === true)
             {
                 setRola(response.data.user[0].Rola);
             }
