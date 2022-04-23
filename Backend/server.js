@@ -4,24 +4,29 @@ const BodyParser = require('body-parser')
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 const cors = require('cors')
-const bodyParser = require("body-parser");
+
 const app = express()
 const port = 5000
-app.use(BodyParser.urlencoded({extended: true}));
+app.use(BodyParser.urlencoded({extended: false}));
+app.use(BodyParser.json());
+
 app.use(cors({
     origin: ["http://localhost:3000"],
-    method: ["GET", "POST"],
+    method: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
     credentials: true,
 }))
+
 app.use(cookieParser())
 app.use(
     session({
-        key: "userId",
-        secret: "subscribe",
+        name: "userId",
+        secret: "secret",
         resave: false,
-        saveUninitialized: false,
+        saveUninitialized: true,
         cookie: {
-            expires: 60 + 60 + 24,
+            secure: false,
+            httpOnly: false,
+            maxAge: 1000*60*60*24,
         },
     })
 );
@@ -34,8 +39,6 @@ app.get('/', (req, res) => {
 app.get('/Baza', async (req, res) => {
     const users = await pool.query(`SELECT * FROM public."uzytkownicy"`);
     res.json(users.rows)
-
-
 })
 
 //post do tworzenia
@@ -43,13 +46,10 @@ app.get('/Baza', async (req, res) => {
 app.post('/Rejestracja', (req, res) => {
     const Login = req.body.Login;
     const Password = req.body.Password;
-    const Email = req.body.Email;
 
-
-
-    const Insert = `INSERT INTO public."uzytkownicy" ("login", "haslo", "rola") 
-                            VALUES ($1,$2, $3)`;
-    pool.query(Insert, [Login, Password, Email], (err, result) => {
+    const Insert = `INSERT INTO public."Uzytkownicy" ("Login", "Haslo") 
+                            VALUES ($1,$2)`;
+    pool.query(Insert, [Login, Password], (err, result) => {
         console.log(err)
     });
 
@@ -57,26 +57,33 @@ app.post('/Rejestracja', (req, res) => {
 
 app.get("/Logowanie", (req, res)=>{
     if(req.session.user){
-        res.send({loggedIn: true, user: req.session.user })
-    } else{
+        res.send({loggedIn: true, user: req.session.user.rows})
+        console.log(req.session.user)
+    }
+    else{
         res.send({loggedIn: false})
     }
+
 })
 
 app.post("/Logowanie", (req, res) => {
     const Login = req.body.Login;
     const Password = req.body.Password;
 
-    const Select = `SELECT * FROM public."uzytkownicy" where "login" = $1 AND "haslo" = $2`;
-    pool.query(Select, [Login,Password], (err, response) => {
-        if(response.rows.length>0){
-            req.session.user =response;
-            console.log(req.session.user);
-            res.send(response);
-        } else{
-            res.send({message: "zły Login/Hasło!"});
+    const Select = `SELECT * FROM public."Uzytkownicy" WHERE "Login" = $1 AND "Haslo" = $2`;
+     pool.query(Select, [Login,Password], (err, result) => {
+        if(err)
+        {
+            console.log(err)
+            res.send({err: err})
         }
-
+        if(result.rows.length > 0){
+            req.session.user = result;
+            console.log(req.session.user)
+            res.send(result.rows)
+        } else{
+            res.send({message: "Zły Login/Hasło!"});
+        }
     })
 })
 

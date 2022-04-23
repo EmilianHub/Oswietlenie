@@ -1,5 +1,3 @@
-
-
 import React, {useEffect, useState} from 'react';
 import "./log.css"
 import Axios from "axios";
@@ -54,19 +52,21 @@ export default function Form() {
         Axios.post('http://localhost:5000/Logowanie', {
             Login: Login,
             Password: Password,
-        })
-            .then((response) => {
-                if (response.data.message){
+        }).then((response) => {
+                if (response.data.message) {
                     setLoginstatus(response.data.message)
-                } else{
-                    setLoginstatus(response.data[0].Login);
-
+                }
+                else{
+                    setLoginstatus(response.data[0].Login)
                 }
             });
     };
     useEffect(()=>{
         Axios.get('http://localhost:5000/Logowanie').then((response) =>{
-            console.log(response);
+            if(response.data.loggedIn == true)
+            {
+                setLoginstatus(response.data.user[0].Login);
+            }
         })
     },[])
 
