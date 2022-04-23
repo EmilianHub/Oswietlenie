@@ -7,8 +7,10 @@ const cors = require('cors')
 
 const app = express()
 const port = 5000
+
+app.set()
+
 app.use(BodyParser.urlencoded({extended: false}));
-app.use(BodyParser.json());
 
 app.use(cors({
     origin: ["http://localhost:3000"],
@@ -62,8 +64,14 @@ app.get("/Logowanie", (req, res)=>{
     }
     else{
         res.send({loggedIn: false})
+
     }
 
+})
+
+app.get("/Logout", (req, res)=>{
+        req.session.destroy();
+        res.send({message: "ok"})
 })
 
 app.post("/Logowanie", (req, res) => {

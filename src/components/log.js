@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import "./log.css"
 import Axios from "axios";
 import {useForm} from "react-hook-form";
+import {useNavigate} from "react-router-dom";
 
 const formStyle = {
     margin: '100px auto',
@@ -41,6 +42,9 @@ const submitStyle = {
 };
 
 export default function Form() {
+
+    let navigate = useNavigate();
+
     Axios.defaults.withCredentials = true;
     const [Login, setLogin] = useState("")
     const [Password, setPassword] = useState("")
@@ -58,6 +62,7 @@ export default function Form() {
                 }
                 else{
                     setLoginstatus(response.data[0].Login)
+                    navigate("/Home");
                 }
             });
     };
@@ -74,8 +79,6 @@ export default function Form() {
     const onSubmit = data => console.log(data);
 
     return (
-
-
         <div className="card">
             <form style={formStyle} onSubmit={handleSubmit(onSubmit)}>
                 <div>Logowanie</div>

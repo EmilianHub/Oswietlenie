@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import Oswietlenie from "../components/Oswietlenie";
+import Sidebar from "../components/Sidebar";
 
 export default function OswietleniePage(){
     const [toggled, setToggled] = useState(false)

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import "./rej.css"
 import Axios from "axios";
 import {useForm} from "react-hook-form";
@@ -48,20 +48,19 @@ export default function Form() {
     const [Password, setPassword] = useState("")
     const [ConfPassword, setConfirmPassword] = useState("")
     const [EMail, setEMail] = useState("")
-    const [rola, setrola] = useState("")
 
 
     const Import = () =>{
-        Axios.post('http://localhost:5000/Rejestracja', {Firstname: firstName, Lastname: lastName, Login: Login, Email:EMail, Password: Password, rola: rola })
+        Axios.post('http://localhost:5000/Rejestracja', {Firstname: firstName, Lastname: lastName, Login: Login, Email:EMail, Password: Password})
             .then((response) => console.log(response))
     }
+
+
 
     const { register, handleSubmit } = useForm();
     const onSubmit = data => console.log(data);
 
     return (
-
-
         <div className="card">
             <form  style={formStyle} onSubmit={handleSubmit(onSubmit)}>
                 <div >Rejestracja </div> <br/>
